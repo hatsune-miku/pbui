@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { AES, enc } from 'crypto-js'
 
 const BaseLink = 'https://pb.vanillacake.cn'
 const ApiBaseUrl = 'https://pb-api.vanillacake.cn'
@@ -21,7 +22,7 @@ function App() {
         'Content-Type': 'application/json',
       },
     })
-      .then((res) => res.text())
+      .then((res) => decode(res.text()))
       .then((data) => {
         setViewMode(true)
         setText(data)
@@ -47,7 +48,7 @@ function App() {
         headers: {
           'Content-Type': 'text/plain',
         },
-        body: text,
+        body: encode(text),
       })
 
       if (!response.ok) {
@@ -137,3 +138,11 @@ function App() {
 }
 
 export default App
+
+function encode(s) {
+  return AES.encrypt(s, '111sigewinne').toString()
+}
+
+function decode(s) {
+  return AES.decrypt(s, '111sigewinne').toString(enc.Utf8)
+}
