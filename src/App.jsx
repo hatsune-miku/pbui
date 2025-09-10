@@ -19,7 +19,7 @@ function App() {
     fetch(`${ApiBaseUrl}/${id}`, {
       method: 'GET',
       headers: {
-        'Content-Type': 'application/json',
+        Accept: 'application/json',
       },
     })
       .then((res) => decode(res.json().text))
