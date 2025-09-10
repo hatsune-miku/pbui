@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 
 const BaseLink = 'https://pb.vanillacake.cn'
+const ApiBaseUrl = 'https://pb-api.vanillacake.cn'
 
 function App() {
   const [text, setText] = useState('')
@@ -14,7 +15,7 @@ function App() {
     if (!id) {
       return
     }
-    fetch(`http://localhost:9876/${id}`, {
+    fetch(`${ApiBaseUrl}/${id}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -41,7 +42,7 @@ function App() {
     setError('')
 
     try {
-      const response = await fetch('http://localhost:9876/paste', {
+      const response = await fetch(`${ApiBaseUrl}/paste`, {
         method: 'POST',
         headers: {
           'Content-Type': 'text/plain',
