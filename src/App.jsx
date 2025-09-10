@@ -22,13 +22,13 @@ function App() {
         'Content-Type': 'application/json',
       },
     })
-      .then((res) => decode(res.text()))
-      .then((data) => {
+      .then((res) => decode(res.json().text))
+      .then((text) => {
         setViewMode(true)
-        setText(data)
+        setText(text)
       })
       .catch((err) => {
-        setError(err.message)
+        setError(err)
       })
   }, [])
 
@@ -46,9 +46,9 @@ function App() {
       const response = await fetch(`${ApiBaseUrl}/paste`, {
         method: 'POST',
         headers: {
-          'Content-Type': 'text/plain',
+          'Content-Type': 'application/json',
         },
-        body: encode(text),
+        body: JSON.stringify({ text: encode(text) }),
       })
 
       if (!response.ok) {
