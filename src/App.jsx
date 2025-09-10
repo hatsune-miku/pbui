@@ -21,7 +21,7 @@ function App() {
         'Content-Type': 'application/json',
       },
     })
-      .then((res) => res.json())
+      .then((res) => res.text())
       .then((data) => {
         setViewMode(true)
         setText(data)
