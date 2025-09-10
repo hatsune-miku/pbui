@@ -140,7 +140,7 @@ function App() {
 export default App
 
 function encode(s) {
-  return AES.encrypt(s, '111sigewinne').toString()
+  return AES.encrypt(s, '111sigewinne').toString(enc.Utf8)
 }
 
 function decode(s) {
