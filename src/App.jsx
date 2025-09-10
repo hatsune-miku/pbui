@@ -51,7 +51,7 @@ function App() {
       })
 
       if (!response.ok) {
-        throw new Error('Failed to create paste')
+        throw new Error('创建paste太快啦，稍等一下')
       }
 
       const data = await response.json()
@@ -100,7 +100,7 @@ function App() {
 
   return (
     <div style={{ maxWidth: '600px', margin: '0 auto', padding: '20px' }}>
-      <h1>Simple Pastebin</h1>
+      <h1>Pastebin!</h1>
 
       <form onSubmit={handleSubmit}>
         <textarea
