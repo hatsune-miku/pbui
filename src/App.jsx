@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { AES, enc } from 'crypto-js'
+import { AES, enc, x64 } from 'crypto-js'
 
 const BaseLink = 'https://pb.vanillacake.cn'
 const ApiBaseUrl = 'https://pb-api.vanillacake.cn'
@@ -22,7 +22,10 @@ function App() {
         Accept: 'application/json',
       },
     })
-      .then((res) => decode(res.json().text))
+      .then((res) => res.json())
+      .then((json) => {
+        return decode(json.text)
+      })
       .then((text) => {
         setViewMode(true)
         setText(text)
@@ -117,7 +120,7 @@ function App() {
         </button>
       </form>
 
-      {error && <p style={{ color: 'red' }}>{error}</p>}
+      {error && <p style={{ color: 'red' }}>{error.message}</p>}
 
       {shareLink && (
         <div style={{ marginTop: '20px' }}>
