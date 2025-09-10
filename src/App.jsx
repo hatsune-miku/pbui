@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { AES, enc, x64 } from 'crypto-js'
+import { AES, enc } from 'crypto-js'
 
 const BaseLink = 'https://pb.vanillacake.cn'
 const ApiBaseUrl = 'https://pb-api.vanillacake.cn'
@@ -10,6 +10,7 @@ function App() {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
   const [viewMode, setViewMode] = useState(false)
+  const [burnAfterRead, setBurnAfterRead] = useState(false)
 
   useEffect(() => {
     const id = location.href.split('/').pop()
@@ -51,7 +52,7 @@ function App() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ text: encode(text) }),
+        body: JSON.stringify({ text: encode(text), burnAfterRead }),
       })
 
       if (!response.ok) {
@@ -114,6 +115,22 @@ function App() {
           rows={10}
           style={{ width: '100%', marginBottom: '10px' }}
         />
+
+        <div>
+          <input
+            type="checkbox"
+            checked={burnAfterRead}
+            onChange={(e) => setBurnAfterRead(e.target.checked)}
+            style={{ marginRight: '5px' }}
+          />
+          <label
+            onClick={() => setBurnAfterRead(!burnAfterRead)}
+            style={{ cursor: 'pointer' }}
+          >
+            Burn after read
+          </label>
+        </div>
+        <br />
 
         <button type="submit" disabled={isLoading}>
           {isLoading ? 'Creating...' : 'Create Paste'}
