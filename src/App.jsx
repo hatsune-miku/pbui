@@ -225,8 +225,8 @@ function App() {
         setReceivedZ(json.z)
         setReceivedB(json.b)
         return json.z
-          ? { text: clearContent(json.text), z: false }
-          : { text: json.text, z: true }
+          ? { text: json.text, z: true }
+          : { text: clearContent(json.text), z: false }
       })
       .then(({ text, z }) => {
         setViewMode(true)
@@ -344,6 +344,7 @@ function App() {
         <textarea
           value={text}
           readOnly={false}
+          onChange={(e) => setText(e.target.value)}
           rows={10}
           style={{ width: '100%', marginBottom: '10px' }}
         />
