@@ -7,11 +7,8 @@ export default defineConfig({
   plugins: [
     react(),
     obfuscatorPlugin({
-      include: [
-        'src/**/*.js',
-        'src/**/*.jsx',
-        'node_modules/crypto-js/**/*.js',
-      ],
+      apply: 'build',
+      include: ['src/**/*.js', 'src/**/*.jsx'],
       options: {
         simplify: true,
         controlFlowFlattening: true,
