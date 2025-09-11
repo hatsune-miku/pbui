@@ -359,24 +359,6 @@ function App() {
   }
 
   if (viewMode) {
-    if (receivedB) {
-      return (
-        <div
-          style={{
-            width: '100%',
-            height: '100%',
-            padding: '20px',
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '10px',
-          }}
-        >
-          <div class="notice">注意：这是一封阅后即焚的消息。</div>
-          <button onClick={() => setReceivedZ(false)}>开启</button>
-        </div>
-      )
-    }
-
     if (receivedZ) {
       return (
         <div
@@ -413,6 +395,10 @@ function App() {
           gap: '10px',
         }}
       >
+        {receivedB ? (
+          <div class="notice">注意：这是一封阅后即焚的消息。</div>
+        ) : null}
+
         {decryptPassword ? (
           <div className="notice">如果看到乱码说明密码错误。</div>
         ) : null}
