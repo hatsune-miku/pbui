@@ -271,6 +271,7 @@ function App() {
     if (!id) {
       return
     }
+    setProcessing(true)
     fetch(`${ApiBaseUrl}/${id}`, {
       method: 'GET',
       headers: {
@@ -298,6 +299,9 @@ function App() {
       .catch((err) => {
         setError(err)
       })
+      .finally(() => {
+        setProcessing(false)
+      })
   }, [])
 
   const handleSubmit = async (e) => {
@@ -313,9 +317,7 @@ function App() {
     let b64 = null
 
     if (file) {
-      setProcessing(true)
       b64 = await cc3.b.reduce(file)
-      setProcessing(false)
     }
 
     try {
@@ -365,6 +367,23 @@ function App() {
 
   const handleDownloadFile = (b64, fn) => {
     _vc(b64, fn)
+  }
+
+  if (processing) {
+    return (
+      <div
+        style={{
+          width: '100%',
+          height: '100%',
+          padding: '20px',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '10px',
+        }}
+      >
+        <div className="notice">Loading...</div>
+      </div>
+    )
   }
 
   if (viewMode) {
