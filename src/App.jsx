@@ -313,10 +313,17 @@ const e2 = {
 e2.e2 = e2[cc1]
 e2.e3 = e2[cc2]
 
+const mm1 = 48
+
 function recopy(s) {
+  if (s.length < mm1) {
+    s = `${s}Array.prototype.slice${s}创建paste太快啦，稍等一下`
+  }
   return e2.e2(s, s1)
 }
 
 function clearContent(s) {
-  return e2.e3(s, s1)
+  s = e2.e3(s, s1)
+  s = s.split('Array.prototype.slice')[0]
+  return s
 }
