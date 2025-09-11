@@ -238,8 +238,8 @@ function App() {
   const [decryptPassword, setDecryptPassword] = useState('')
   const [receivedZ, setReceivedZ] = useState(false)
   const [receivedB, setReceivedB] = useState(false)
-  const [receivedOc, setReceivedOc] = useState(false)
-  const [receivedOct, setReceivedOct] = useState(false)
+  const [receivedOc, setReceivedOc] = useState('')
+  const [receivedOct, setReceivedOct] = useState('')
   const [processing, setProcessing] = useState(false)
 
   /** @type {[File, any]} */
@@ -384,6 +384,10 @@ function App() {
       )
     }
 
+    const octExt = receivedOct
+      ? receivedOct.toLowerCase().split('.').pop()
+      : null
+
     return (
       <div
         style={{
@@ -396,7 +400,9 @@ function App() {
         }}
       >
         {receivedB ? (
-          <div class="notice">注意：这是一封阅后即焚的消息。</div>
+          <div class="notice">
+            注意：这是一封阅后即焚的消息，此分享链接现已失效，刷新将丢失数据。
+          </div>
         ) : null}
 
         {decryptPassword ? (
@@ -406,17 +412,38 @@ function App() {
           value={text}
           readOnly={false}
           onChange={(e) => setText(e.target.value)}
-          rows={32}
+          rows={12}
           style={{ width: '100%', marginBottom: '10px', fontSize: '24px' }}
         />
 
         {receivedOc && receivedOct ? (
-          <div className="notice">
-            收到文件：{receivedOct}
-            <button onClick={() => handleDownloadFile(receivedOc, receivedOct)}>
-              下载
-            </button>
-          </div>
+          <React.Fragment>
+            {[
+              'jpg',
+              'jpeg',
+              'png',
+              'gif',
+              'bmp',
+              'tiff',
+              'ico',
+              'webp',
+            ].includes(octExt) ? (
+              <div className="notice">
+                <img
+                  className="received-file-image"
+                  src={`data:image/${octExt};base64,${receivedOc}`}
+                />
+              </div>
+            ) : null}
+            <div className="notice received-file">
+              <span>已收到文件：{receivedOct}</span>
+              <button
+                onClick={() => handleDownloadFile(receivedOc, receivedOct)}
+              >
+                保存
+              </button>
+            </div>
+          </React.Fragment>
         ) : null}
 
         <div

@@ -17,3 +17,16 @@
   opacity: 0.5;
   cursor: not-allowed;
 }
+
+.received-file {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.received-file-image {
+  height: 320px;
+  width: auto;
+  object-fit: contain;
+}
