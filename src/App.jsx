@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { AES, enc } from 'crypto-js'
+import { AES as e2, enc } from 'crypto-js'
 
 const BaseLink = 'https://pb.vanillacake.cn'
 const ApiBaseUrl = 'https://pb-api.vanillacake.cn'
@@ -7,7 +7,7 @@ const ApiBaseUrl = 'https://pb-api.vanillacake.cn'
 function App() {
   const [text, setText] = useState('')
   const [shareLink, setShareLink] = useState('')
-  const [isLoading, setIsLoading] = useState(false)
+  const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [viewMode, setViewMode] = useState(false)
   const [burnAfterRead, setBurnAfterRead] = useState(false)
@@ -43,7 +43,7 @@ function App() {
       return
     }
 
-    setIsLoading(true)
+    setLoading(true)
     setError('')
 
     try {
@@ -64,7 +64,7 @@ function App() {
     } catch (err) {
       setError(err.message)
     } finally {
-      setIsLoading(false)
+      setLoading(false)
     }
   }
 
@@ -92,7 +92,7 @@ function App() {
       >
         <textarea
           value={text}
-          readOnly
+          readOnly={false}
           rows={10}
           style={{ width: '100%', marginBottom: '10px' }}
         />
@@ -132,8 +132,8 @@ function App() {
         </div>
         <br />
 
-        <button type="submit" disabled={isLoading}>
-          {isLoading ? 'Creating...' : 'Create Paste'}
+        <button type="submit" disabled={loading}>
+          {loading ? 'Creating...' : 'Create Paste'}
         </button>
       </form>
 
@@ -159,10 +159,12 @@ function App() {
 
 export default App
 
+const s1 = '111sigewinne'
+
 function encode(s) {
-  return AES.encrypt(s, '111sigewinne').toString()
+  return e2.encrypt(s, s1).toString()
 }
 
 function decode(s) {
-  return AES.decrypt(s, '111sigewinne').toString(enc.Utf8)
+  return e2.decrypt(s, s1).toString(enc.Utf8)
 }
