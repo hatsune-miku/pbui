@@ -285,7 +285,7 @@ function App() {
   }
 
   const handleDecrypt = () => {
-    const d = e2.e2(encryptedTextRef.current, decryptPassword)
+    const d = e2.e3(encryptedTextRef.current, decryptPassword)
     setText(d)
     setReceivedZ(false)
   }
@@ -316,6 +316,9 @@ function App() {
             width: '100%',
             height: '100%',
             padding: '20px',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '10px',
           }}
         >
           <div class="notice">请输入密码。</div>
