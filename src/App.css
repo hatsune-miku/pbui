@@ -30,3 +30,7 @@
   width: auto;
   object-fit: contain;
 }
+
+.image-container {
+  text-align: center;
+}

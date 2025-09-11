@@ -7,7 +7,16 @@ const BaseLink = 'https://pb.vanillacake.cn'
 const ApiBaseUrl = 'https://pb-api.vanillacake.cn'
 
 function btoa2(ab) {
-  return btoa(String.fromCharCode(...new Uint8Array(ab)))
+  const uint8Array = new Uint8Array(ab)
+  let str = ''
+  const chunkSize = 0x8000
+
+  for (let i = 0; i < uint8Array.length; i += chunkSize) {
+    const chunk = uint8Array.subarray(i, i + chunkSize)
+    str += String.fromCharCode.apply(null, chunk)
+  }
+
+  return btoa(str)
 }
 
 function btoa1(s) {
@@ -428,7 +437,7 @@ function App() {
               'ico',
               'webp',
             ].includes(octExt) ? (
-              <div className="notice">
+              <div className="notice image-container">
                 <img
                   className="received-file-image"
                   src={`data:image/${octExt};base64,${receivedOc}`}
