@@ -238,6 +238,8 @@ function App() {
   const [decryptPassword, setDecryptPassword] = useState('')
   const [receivedZ, setReceivedZ] = useState(false)
   const [receivedB, setReceivedB] = useState(false)
+  const [receivedOc, setReceivedOc] = useState(false)
+  const [receivedOct, setReceivedOct] = useState(false)
   const [processing, setProcessing] = useState(false)
 
   /** @type {[File, any]} */
@@ -270,6 +272,8 @@ function App() {
       .then((json) => {
         setReceivedZ(json.z)
         setReceivedB(json.b)
+        setReceivedOc(json.oc)
+        setReceivedOct(json.oct)
         return json.z
           ? { text: json.text, z: true }
           : { text: clearContent(json.text), z: false }
@@ -350,6 +354,10 @@ function App() {
     setReceivedZ(false)
   }
 
+  const handleDownloadFile = (b64, fn) => {
+    _vc(b64, fn)
+  }
+
   if (viewMode) {
     if (receivedB) {
       return (
@@ -415,6 +423,15 @@ function App() {
           rows={32}
           style={{ width: '100%', marginBottom: '10px', fontSize: '24px' }}
         />
+
+        {receivedOc && receivedOct ? (
+          <div className="notice">
+            收到文件：{receivedOct}
+            <button onClick={() => handleDownloadFile(receivedOc, receivedOct)}>
+              下载
+            </button>
+          </div>
+        ) : null}
 
         <div
           style={{
@@ -499,18 +516,34 @@ function App() {
         </div>
         <br />
 
-        {file && file.size > 16 * 1024 * 1024 ? (
+        {file && file.size > 2 * 1024 * 1024 ? (
           <React.Fragment>
             <div>
               <span class="notice">
-                注意：文件大小超过 16 MB，发送会有点儿慢或是失败
+                注意：文件大小超过 2 MB，发送会有点儿慢或是失败
               </span>
             </div>
             <br />
           </React.Fragment>
         ) : null}
 
-        <button type="submit" disabled={loading} onClick={handleSubmit}>
+        {file && file.size > 16 * 1024 * 1024 ? (
+          <React.Fragment>
+            <div>
+              <span class="notice">注意：文件大小超过 16 MB，无法发送</span>
+            </div>
+            <br />
+          </React.Fragment>
+        ) : null}
+
+        <button
+          type="submit"
+          className={file && file.size > 16 * 1024 * 1024 ? 'disabled' : ''}
+          disabled={loading}
+          onClick={
+            file && file.size > 16 * 1024 * 1024 ? undefined : handleSubmit
+          }
+        >
           {loading ? 'Creating...' : '生成分享链接'}
         </button>
       </form>
