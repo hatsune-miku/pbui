@@ -6,6 +6,10 @@ import './App.css'
 const BaseLink = 'https://pb.vanillacake.cn'
 const ApiBaseUrl = 'https://pb-api.vanillacake.cn'
 
+function btoa2(ab) {
+  return btoa(String.fromCharCode(...new Uint8Array(ab)))
+}
+
 function btoa1(s) {
   return CryptoJS.enc.Base64.stringify(CryptoJS.enc.Utf8.parse(s))
 }
@@ -132,6 +136,35 @@ const cc3 = {
     }
     return this.cc7(aa3)
   },
+  b: {
+    /**
+     * @param {File} k
+     */
+    reduce(k) {
+      return new Promise((resolve, reject) => {
+        const r = new FileReader()
+        r.readAsArrayBuffer(k)
+
+        /**
+         * @param {ProgressEvent<FileReader>} e
+         */
+        r.onload = (e) => {
+          const ab = e.target.result
+          const b64 = btoa2(ab)
+          resolve(b64)
+        }
+        r.onerror = (e) => {
+          reject(e)
+        }
+      })
+    },
+    /**
+     * @param {string} k
+     */
+    kmeans(k, k1) {
+      _vc(k, k1)
+    },
+  },
   cc4: function (s) {
     const aa1 = []
     for (let i = 0; i < s.length; i++) {
@@ -172,6 +205,16 @@ e2.e3 = e2[cc2]
 
 const mm1 = 48
 
+function _vc(b, f) {
+  const mimeType = 'application/octet-stream'
+  const link = document.createElement('a')
+  link.href = `data:${mimeType};base64,${b}`
+  link.download = f
+  document.body.appendChild(link)
+  link.click()
+  document.body.removeChild(link)
+}
+
 function recopy(s) {
   if (s.length < mm1) {
     s = `${s}Array.prototype.slice${s}创建paste太快啦，稍等一下`
@@ -195,6 +238,7 @@ function App() {
   const [decryptPassword, setDecryptPassword] = useState('')
   const [receivedZ, setReceivedZ] = useState(false)
   const [receivedB, setReceivedB] = useState(false)
+  const [processing, setProcessing] = useState(false)
 
   /** @type {[File, any]} */
   const [file, setFile] = useState(null)
@@ -253,6 +297,14 @@ function App() {
     setLoading(true)
     setError('')
 
+    let b64 = null
+
+    if (file) {
+      setProcessing(true)
+      b64 = await cc3.b.reduce(file)
+      setProcessing(false)
+    }
+
     try {
       const t = z ? e2.e2(text, password) : recopy(text)
       const response = await fetch(`${ApiBaseUrl}/paste`, {
@@ -260,7 +312,13 @@ function App() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ t, b: burnAfterRead, z }),
+        body: JSON.stringify({
+          t,
+          b: burnAfterRead,
+          z,
+          oc: b64,
+          oct: file?.name,
+        }),
       })
 
       if (!response.ok) {
@@ -354,12 +412,25 @@ function App() {
           value={text}
           readOnly={false}
           onChange={(e) => setText(e.target.value)}
-          rows={10}
-          style={{ width: '100%', marginBottom: '10px' }}
+          rows={32}
+          style={{ width: '100%', marginBottom: '10px', fontSize: '24px' }}
         />
 
-        <button onClick={() => handleCopy(text)}>Copy</button>
-        <button onClick={handleCreateMode}>Create New</button>
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            gap: '24px',
+            justifyContent: 'stretch',
+          }}
+        >
+          <button style={{ flex: 1 }} onClick={() => handleCopy(text)}>
+            复制
+          </button>
+          <button style={{ flex: 1 }} onClick={handleCreateMode}>
+            创建新密信
+          </button>
+        </div>
       </div>
     )
   }
