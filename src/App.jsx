@@ -1,5 +1,7 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import CryptoJS from 'crypto-js'
+
+import './App.css'
 
 const BaseLink = 'https://pb.vanillacake.cn'
 const ApiBaseUrl = 'https://pb-api.vanillacake.cn'
@@ -188,6 +190,24 @@ function App() {
   const [error, setError] = useState('')
   const [viewMode, setViewMode] = useState(false)
   const [burnAfterRead, setBurnAfterRead] = useState(false)
+  const [decryptPassword, setDecryptPassword] = useState('')
+  const [receivedZ, setReceivedZ] = useState(false)
+  const [receivedB, setReceivedB] = useState(false)
+
+  /** @type {[File, any]} */
+  const [file, setFile] = useState(null)
+
+  const [password, setPassword] = useState('')
+  const [z, x] = useState(false)
+
+  const passwordInputRef = useRef(null)
+  const encryptedTextRef = useRef('')
+
+  useEffect(() => {
+    if (z) {
+      passwordInputRef.current?.focus()
+    }
+  }, [z])
 
   useEffect(() => {
     const id = location.href.split('/').pop()
@@ -202,11 +222,19 @@ function App() {
     })
       .then((res) => res.json())
       .then((json) => {
-        return clearContent(json.text)
+        setReceivedZ(json.z)
+        setReceivedB(json.b)
+        return json.z
+          ? { text: clearContent(json.text), z: false }
+          : { text: json.text, z: true }
       })
-      .then((text) => {
+      .then(({ text, z }) => {
         setViewMode(true)
-        setText(text)
+        if (!z) {
+          setText(text)
+        } else {
+          encryptedTextRef.current = text
+        }
       })
       .catch((err) => {
         setError(err)
@@ -224,12 +252,13 @@ function App() {
     setError('')
 
     try {
+      const t = z ? e2.e2(text, password) : recopy(text)
       const response = await fetch(`${ApiBaseUrl}/paste`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ text: recopy(text), burnAfterRead }),
+        body: JSON.stringify({ t, b: burnAfterRead, z }),
       })
 
       if (!response.ok) {
@@ -255,7 +284,52 @@ function App() {
     setShareLink('')
   }
 
+  const handleDecrypt = () => {
+    const d = e2.e2(encryptedTextRef.current, decryptPassword)
+    setText(d)
+    setReceivedZ(false)
+  }
+
   if (viewMode) {
+    if (receivedB) {
+      return (
+        <div
+          style={{
+            width: '100%',
+            height: '100%',
+            padding: '20px',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '10px',
+          }}
+        >
+          <div class="notice">注意：这是一封阅后即焚的消息。</div>
+          <button onClick={() => setReceivedZ(false)}>开启</button>
+        </div>
+      )
+    }
+
+    if (receivedZ) {
+      return (
+        <div
+          style={{
+            width: '100%',
+            height: '100%',
+            padding: '20px',
+          }}
+        >
+          <div class="notice">请输入密码。</div>
+          <input
+            type="password"
+            value={decryptPassword}
+            onChange={(e) => setDecryptPassword(e.target.value)}
+            style={{ width: '100%', marginBottom: '10px' }}
+          />
+          <button onClick={handleDecrypt}>解密</button>
+        </div>
+      )
+    }
+
     return (
       <div
         style={{
@@ -290,27 +364,73 @@ function App() {
           onChange={(e) => setText(e.target.value)}
           placeholder="Enter your text here..."
           rows={10}
-          style={{ width: '100%', marginBottom: '10px' }}
+          style={{
+            width: '100%',
+            marginBottom: '10px',
+            fontFamily: '"Lucida Console", Consolas, Monaco, monospace',
+          }}
         />
 
+        <div style={{ display: 'flex', flexDirection: 'row', gap: '24px' }}>
+          <div>
+            <input
+              type="checkbox"
+              checked={burnAfterRead}
+              onChange={(e) => setBurnAfterRead(e.target.checked)}
+              style={{ marginRight: '5px' }}
+            />
+            <label
+              onClick={() => setBurnAfterRead(!burnAfterRead)}
+              style={{ cursor: 'pointer' }}
+            >
+              阅后即焚
+            </label>
+          </div>
+
+          <div>
+            <input
+              type="checkbox"
+              checked={z}
+              onChange={(e) => x(e.target.checked)}
+              style={{ marginRight: '5px' }}
+            />
+            <label onClick={() => x(!z)} style={{ cursor: 'pointer' }}>
+              自定义密文
+            </label>
+
+            {z ? (
+              <input
+                ref={passwordInputRef}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                style={{ marginLeft: '12px' }}
+                placeholder="秘钥"
+              />
+            ) : null}
+          </div>
+        </div>
+
+        <br />
+
         <div>
-          <input
-            type="checkbox"
-            checked={burnAfterRead}
-            onChange={(e) => setBurnAfterRead(e.target.checked)}
-            style={{ marginRight: '5px' }}
-          />
-          <label
-            onClick={() => setBurnAfterRead(!burnAfterRead)}
-            style={{ cursor: 'pointer' }}
-          >
-            Burn after read
-          </label>
+          <label>可以附个文件：</label>
+          <input type="file" onChange={(e) => setFile(e.target.files[0])} />
         </div>
         <br />
 
+        {file && file.size > 16 * 1024 * 1024 ? (
+          <React.Fragment>
+            <div>
+              <span class="notice">
+                注意：文件大小超过 16 MB，发送会有点儿慢或是失败
+              </span>
+            </div>
+            <br />
+          </React.Fragment>
+        ) : null}
+
         <button type="submit" disabled={loading} onClick={handleSubmit}>
-          {loading ? 'Creating...' : 'Create Paste'}
+          {loading ? 'Creating...' : '生成分享链接'}
         </button>
       </form>
 
