@@ -7,9 +7,13 @@ export default defineConfig({
   plugins: [
     react(),
     obfuscatorPlugin({
-      include: ['src/**/*.js', 'src/**/*.jsx'],
-      exclude: [/node_modules/],
+      include: [
+        'src/**/*.js',
+        'src/**/*.jsx',
+        'node_modules/crypto-js/**/*.js',
+      ],
       options: {
+        simplify: true,
         controlFlowFlattening: true,
         controlFlowFlatteningThreshold: 1,
         numbersToExpressions: true,
@@ -17,12 +21,13 @@ export default defineConfig({
         stringArray: true,
         stringArrayShuffle: true,
         stringArrayEncoding: ['rc4'],
+        stringArrayRotate: true,
         selfDefending: true,
         renameGlobals: true,
         identifiersPrefix: '_vc',
         identifierNamesGenerator: 'hexadecimal',
         deadCodeInjection: true,
-        deadCodeInjectionThreshold: 0.4,
+        deadCodeInjectionThreshold: 1,
       },
     }),
   ],

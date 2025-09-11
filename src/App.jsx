@@ -25,7 +25,7 @@ function App() {
     })
       .then((res) => res.json())
       .then((json) => {
-        return decode(json.text)
+        return clearContent(json.text)
       })
       .then((text) => {
         setViewMode(true)
@@ -52,7 +52,7 @@ function App() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ text: encode(text), burnAfterRead }),
+        body: JSON.stringify({ text: recopy(text), burnAfterRead }),
       })
 
       if (!response.ok) {
@@ -146,7 +146,7 @@ function App() {
             <input
               type="text"
               value={shareLink}
-              readOnly
+              readOnly={false}
               style={{ flex: 1, padding: '5px', marginRight: '5px' }}
             />
             <button onClick={() => handleCopy(shareLink)}>Copy</button>
@@ -159,12 +159,15 @@ function App() {
 
 export default App
 
-const s1 = '111sigewinne'
+const s1 = 'encode,decode,decrypt,encrypt,toString'
 
-function encode(s) {
-  return e2.encrypt(s, s1).toString()
+e2.e2 = e2.encrypt
+e2.e3 = e2.decrypt
+
+function recopy(s) {
+  return e2.e2(s, s1).toString()
 }
 
-function decode(s) {
-  return e2.decrypt(s, s1).toString(enc.Utf8)
+function clearContent(s) {
+  return e2.e3(s, s1).toString(enc.Utf8)
 }
