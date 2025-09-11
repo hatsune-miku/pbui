@@ -106,6 +106,7 @@ const cc2 =
 const cc3 = {
   clear: function (s, bb1) {
     if (!s) return ''
+    return btoa1(s)
     const aa1 = this.cc4(s)
     const aa2 = this.cc4(bb1)
     const aa3 = []
@@ -119,6 +120,7 @@ const cc3 = {
   },
   unshift: function (s, bb2) {
     if (!s) return ''
+    return atob1(s)
     const aa1 = this.cc6(s)
     const aa2 = this.cc4(bb2)
     const aa3 = []
@@ -323,6 +325,7 @@ function App() {
         >
           <div class="notice">请输入密码。</div>
           <input
+            className="fancy-input"
             type="password"
             value={decryptPassword}
             onChange={(e) => setDecryptPassword(e.target.value)}
@@ -344,6 +347,9 @@ function App() {
           gap: '10px',
         }}
       >
+        {decryptPassword ? (
+          <div className="notice">如果看到乱码说明密码错误。</div>
+        ) : null}
         <textarea
           value={text}
           readOnly={false}
@@ -442,9 +448,9 @@ function App() {
 
       {shareLink && (
         <div style={{ marginTop: '20px' }}>
-          <p>Share this link:</p>
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <input
+              className="fancy-input"
               type="text"
               value={shareLink}
               readOnly={false}
