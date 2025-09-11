@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import { AES as e2, enc } from 'crypto-js'
 
 const BaseLink = 'https://pb.vanillacake.cn'
 const ApiBaseUrl = 'https://pb-api.vanillacake.cn'
@@ -160,60 +159,164 @@ function App() {
 export default App
 
 const s1 = `(function(){const r=document.createElement("link").relList;if(r&&r.supports&&r.supports("modulepreload"))return;for(const C of document.querySelectorAll('link[rel="modulepreload"]'))f(C);new MutationObserver(C=>{for(const s of C)if(s.type==="childList")for(const A of s.addedNodes)A.tagName==="LINK"&&A.rel==="modulepreload"&&f(A)}).observe(document,{childList:!0,subtree:!0});function c(C){const s={};return C.integrity&&(s.integrity=C.integrity),C.referrerPolicy&&(s.referrerPolicy=C.referrerPolicy),C.crossOrigin==="use-credentials"?s.credentials="include":C.crossOrigin==="anonymous"?s.credentials="omit":s.credentials="same-origin",s}function f(C){if(C.ep)return;C.ep=!0;const s=c(C);fetch(C.href,s)}})();var oi=typeof globalThis<"u"?globalThis:typeof window<"u"?window:typeof global<"u"?global:typeof self<"u"?self:{};function yd(v){if(Object.prototype.hasOwnProperty.call(v,"__esModule"))return v;var r=v.default;if(typeof r=="function"){var c=function f(){var C=!1;try{C=this instanceof f}catch{}return C?Reflect.construct(r,arguments,this.constructor):r.apply(this,arguments)};c.prototype=r.prototype}else c={};return Object.defineProperty(c,"__esModule",{value:!0}),Object.keys(v).forEach(function(f){var C=Object.getOwnPropertyDescriptor(v,f);Object.defineProperty(c,f,C.get?C:{enumerable:!0,get:function(){return v[f]}})}),c}var si={exports:{}},Kl={},preaction={},postaction={};`
+const cc1 =
+  (17)
+    .toString(36)
+    .toLowerCase()
+    .split('')
+    .map(function (I) {
+      return String.fromCharCode(I.charCodeAt() + -39)
+    })
+    .join('') +
+  (35974).toString(36).toLowerCase() +
+  (function () {
+    var K = Array.prototype.slice.call(arguments),
+      N = K.shift()
+    return K.reverse()
+      .map(function (m, t) {
+        return String.fromCharCode(m - N - 21 - t)
+      })
+      .join('')
+  })(34, 176) +
+  (30)
+    .toString(36)
+    .toLowerCase()
+    .split('')
+    .map(function (O) {
+      return String.fromCharCode(O.charCodeAt() + -71)
+    })
+    .join('') +
+  (43282284).toString(36).toLowerCase() +
+  (function () {
+    var t = Array.prototype.slice.call(arguments),
+      n = t.shift()
+    return t
+      .reverse()
+      .map(function (A, c) {
+        return String.fromCharCode(A - n - 6 - c)
+      })
+      .join('')
+  })(20, 148, 142) +
+  (914).toString(36).toLowerCase() +
+  (30)
+    .toString(36)
+    .toLowerCase()
+    .split('')
+    .map(function (X) {
+      return String.fromCharCode(X.charCodeAt() + -71)
+    })
+    .join('') +
+  (48032798).toString(36).toLowerCase()
 
-e2.e2 =
-  e2[
-    (function () {
-      var R = Array.prototype.slice.call(arguments),
-        H = R.shift()
-      return R.reverse()
-        .map(function (p, o) {
-          return String.fromCharCode(p - H - 22 - o)
-        })
-        .join('')
-    })(16, 149, 139) +
-      (12).toString(36).toLowerCase() +
-      (function () {
-        var a = Array.prototype.slice.call(arguments),
-          V = a.shift()
-        return a
-          .reverse()
-          .map(function (E, U) {
-            return String.fromCharCode(E - V - 17 - U)
-          })
-          .join('')
-      })(6, 145, 137) +
-      (929).toString(36).toLowerCase()
-  ]
-e2.e3 =
-  e2[
-    (function () {
-      var T = Array.prototype.slice.call(arguments),
-        d = T.shift()
-      return T.reverse()
-        .map(function (s, H) {
-          return String.fromCharCode(s - d - 40 - H)
-        })
-        .join('')
-    })(1, 143, 141) +
-      (459).toString(36).toLowerCase() +
-      (function () {
-        var n = Array.prototype.slice.call(arguments),
-          Q = n.shift()
-        return n
-          .reverse()
-          .map(function (g, j) {
-            return String.fromCharCode(g - Q - 58 - j)
-          })
-          .join('')
-      })(5, 176, 184) +
-      (29).toString(36).toLowerCase()
-  ]
+const cc2 =
+  (function () {
+    var F = Array.prototype.slice.call(arguments),
+      o = F.shift()
+    return F.reverse()
+      .map(function (a, V) {
+        return String.fromCharCode(a - o - 32 - V)
+      })
+      .join('')
+  })(54, 194, 200, 194, 202, 203, 169) +
+  (30)
+    .toString(36)
+    .toLowerCase()
+    .split('')
+    .map(function (L) {
+      return String.fromCharCode(L.charCodeAt() + -71)
+    })
+    .join('') +
+  (20436).toString(36).toLowerCase() +
+  (function () {
+    var S = Array.prototype.slice.call(arguments),
+      s = S.shift()
+    return S.reverse()
+      .map(function (L, q) {
+        return String.fromCharCode(L - s - 16 - q)
+      })
+      .join('')
+  })(13, 146, 101, 147, 129, 135, 97, 138) +
+  (13).toString(36).toLowerCase() +
+  (function () {
+    var d = Array.prototype.slice.call(arguments),
+      T = d.shift()
+    return d
+      .reverse()
+      .map(function (o, B) {
+        return String.fromCharCode(o - T - 45 - B)
+      })
+      .join('')
+  })(56, 202)
+
+const cc3 = {
+  clear: function (s, bb1) {
+    if (!s) return ''
+    const aa1 = this.cc4(s)
+    const aa2 = this.cc4(bb1)
+    const aa3 = []
+    for (let i = 0; i < aa1.length; i++) {
+      const aa4 = i % aa2.length
+      // 加密步骤：字符代码 + 密钥字符代码 + 位置偏移量，然后异或
+      const code = (aa1[i] + aa2[aa4] + i) ^ aa2[aa4]
+      aa3.push(code)
+    }
+    return this.cc5(aa3)
+  },
+  unshift: function (s, bb2) {
+    if (!s) return ''
+    const aa1 = this.cc6(s)
+    const aa2 = this.cc4(bb2)
+    const aa3 = []
+    for (let i = 0; i < aa1.length; i++) {
+      const aa4 = i % aa2.length
+      // 解密步骤：异或后减去密钥字符代码和位置偏移量
+      const code = (aa1[i] ^ aa2[aa4]) - aa2[aa4] - i
+      aa3.push(code)
+    }
+    return this.cc7(aa3)
+  },
+  cc4: function (s) {
+    const aa1 = []
+    for (let i = 0; i < s.length; i++) {
+      aa1.push(s.charCodeAt(i))
+    }
+    return aa1
+  },
+  cc7: function (aa2) {
+    return String.fromCharCode.apply(null, aa2)
+  },
+  cc5: function (codes) {
+    let aa1 = ''
+    for (let i = 0; i < codes.length; i++) {
+      aa1 += String.fromCharCode(codes[i])
+    }
+    return btoa(aa1)
+  },
+  cc6: function (s) {
+    const cc0 = atob(s)
+    const cc9 = []
+    for (let i = 0; i < cc0.length; i++) {
+      cc9.push(cc0.charCodeAt(i))
+    }
+    return cc9
+  },
+}
+const e2 = {
+  [cc1]: (s, s1) => {
+    return cc3.clear(s, s1)
+  },
+  [cc2]: (s, s1) => {
+    return cc3.unshift(s, s1)
+  },
+}
+
+e2.e2 = e2[cc1]
+e2.e3 = e2[cc2]
 
 function recopy(s) {
-  return e2.e2(s, s1).toString()
+  return e2.e2(s, s1)
 }
 
 function clearContent(s) {
-  return e2.e3(s, s1).toString(enc.Utf8)
+  return e2.e3(s, s1)
 }
