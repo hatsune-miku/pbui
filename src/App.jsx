@@ -284,9 +284,7 @@ function App() {
         setReceivedB(json.b)
         setReceivedOc(json.oc)
         setReceivedOct(json.oct)
-        return json.z
-          ? { text: json.text, z: true }
-          : { text: clearContent(json.text), z: false }
+        return json.z ? { text: json.text, z: true } : { text: clearContent(json.text), z: false }
       })
       .then(({ text, z }) => {
         setViewMode(true)
@@ -303,6 +301,47 @@ function App() {
         setProcessing(false)
       })
   }, [])
+
+  const handleSubmitDirect = async (e) => {
+    e.preventDefault()
+    if (!text.trim()) {
+      setError('Please enter some text')
+      return
+    }
+
+    setLoading(true)
+    setError('')
+
+    let b64 = null
+
+    try {
+      const t = text
+      const response = await fetch(`${ApiBaseUrl}/paste`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          t,
+          b: burnAfterRead,
+          z,
+          oc: b64,
+          oct: file?.name,
+        }),
+      })
+
+      if (!response.ok) {
+        throw new Error('创建paste太快啦，稍等一下')
+      }
+
+      const data = await response.json()
+      setShareLink(`${ApiBaseUrl}/raw/${data.id}`)
+    } catch (err) {
+      setError(err.message)
+    } finally {
+      setLoading(false)
+    }
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -412,9 +451,7 @@ function App() {
       )
     }
 
-    const octExt = receivedOct
-      ? receivedOct.toLowerCase().split('.').pop()
-      : null
+    const octExt = receivedOct ? receivedOct.toLowerCase().split('.').pop() : null
 
     return (
       <div
@@ -428,14 +465,10 @@ function App() {
         }}
       >
         {receivedB ? (
-          <div class="notice">
-            注意：这是一封阅后即焚的消息，此分享链接现已失效，刷新将丢失数据。
-          </div>
+          <div class="notice">注意：这是一封阅后即焚的消息，此分享链接现已失效，刷新将丢失数据。</div>
         ) : null}
 
-        {decryptPassword ? (
-          <div className="notice">如果看到乱码说明密码错误。</div>
-        ) : null}
+        {decryptPassword ? <div className="notice">如果看到乱码说明密码错误。</div> : null}
         <textarea
           value={text}
           readOnly={false}
@@ -446,30 +479,14 @@ function App() {
 
         {receivedOc && receivedOct ? (
           <React.Fragment>
-            {[
-              'jpg',
-              'jpeg',
-              'png',
-              'gif',
-              'bmp',
-              'tiff',
-              'ico',
-              'webp',
-            ].includes(octExt) ? (
+            {['jpg', 'jpeg', 'png', 'gif', 'bmp', 'tiff', 'ico', 'webp'].includes(octExt) ? (
               <div className="notice image-container">
-                <img
-                  className="received-file-image"
-                  src={`data:image/${octExt};base64,${receivedOc}`}
-                />
+                <img className="received-file-image" src={`data:image/${octExt};base64,${receivedOc}`} />
               </div>
             ) : null}
             <div className="notice received-file">
               <span>已收到文件：{receivedOct}</span>
-              <button
-                onClick={() => handleDownloadFile(receivedOc, receivedOct)}
-              >
-                保存
-              </button>
+              <button onClick={() => handleDownloadFile(receivedOc, receivedOct)}>保存</button>
             </div>
           </React.Fragment>
         ) : null}
@@ -518,21 +535,13 @@ function App() {
               onChange={(e) => setBurnAfterRead(e.target.checked)}
               style={{ marginRight: '5px' }}
             />
-            <label
-              onClick={() => setBurnAfterRead(!burnAfterRead)}
-              style={{ cursor: 'pointer' }}
-            >
+            <label onClick={() => setBurnAfterRead(!burnAfterRead)} style={{ cursor: 'pointer' }}>
               阅后即焚
             </label>
           </div>
 
           <div>
-            <input
-              type="checkbox"
-              checked={z}
-              onChange={(e) => x(e.target.checked)}
-              style={{ marginRight: '5px' }}
-            />
+            <input type="checkbox" checked={z} onChange={(e) => x(e.target.checked)} style={{ marginRight: '5px' }} />
             <label onClick={() => x(!z)} style={{ cursor: 'pointer' }}>
               自定义密文
             </label>
@@ -560,9 +569,7 @@ function App() {
         {file && file.size > 2 * 1024 * 1024 ? (
           <React.Fragment>
             <div>
-              <span class="notice">
-                注意：文件大小超过 2 MB，发送会有点儿慢或是失败
-              </span>
+              <span class="notice">注意：文件大小超过 2 MB，发送会有点儿慢或是失败</span>
             </div>
             <br />
           </React.Fragment>
@@ -581,11 +588,18 @@ function App() {
           type="submit"
           className={file && file.size > 16 * 1024 * 1024 ? 'disabled' : ''}
           disabled={loading}
-          onClick={
-            file && file.size > 16 * 1024 * 1024 ? undefined : handleSubmit
-          }
+          onClick={file && file.size > 16 * 1024 * 1024 ? undefined : handleSubmit}
         >
           {loading ? 'Creating...' : '生成分享链接'}
+        </button>
+
+        <button
+          type="submit"
+          className={file && file.size > 16 * 1024 * 1024 ? 'disabled' : ''}
+          disabled={loading}
+          onClick={file && file.size > 16 * 1024 * 1024 ? undefined : handleSubmitDirect}
+        >
+          {loading ? 'Creating...' : '生成数据直链'}
         </button>
       </form>
 
