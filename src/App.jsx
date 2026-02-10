@@ -648,6 +648,15 @@ function App() {
           </div>
         </div>
       )}
+
+      <details style={{ marginTop: '20px', opacity: 0.7 }}>
+        <summary style={{ cursor: 'pointer' }}>关于数据安全</summary>
+        <ul style={{ marginTop: '8px', paddingLeft: '20px', lineHeight: 1.8 }}>
+          <li>必要的时候，请启用阅后即焚和自定义密文。在一些地区，HTTPS 并不是绝对可信的。</li>
+          <li>不使用自定义密文时，将会使用默认密码进行加解密。</li>
+          <li>数据在远端服务器中，以密文形式存于易失性存储，不会持久化。会随着不定期重启而丢失。</li>
+        </ul>
+      </details>
     </div>
   )
 }
