@@ -3,8 +3,8 @@ import CryptoJS from 'crypto-js'
 
 import './App.css'
 
-const BaseLink = 'https://pb.vanillacake.cn'
-const ApiBaseUrl = 'https://pb-api.vanillacake.cn'
+const BaseLink = 'https://pb.irislivier.com'
+const ApiBaseUrl = 'https://pb-api.irislivier.com'
 
 function btoa2(ab) {
   const uint8Array = new Uint8Array(ab)
