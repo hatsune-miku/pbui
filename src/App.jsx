@@ -3,8 +3,23 @@ import CryptoJS from 'crypto-js'
 
 import './App.css'
 
-const BaseLink = 'https://pb.irislivier.com'
-const ApiBaseUrl = 'https://pb-api.irislivier.com'
+function getDynamicUrls() {
+  const { hostname } = location
+  const parts = hostname.split('.')
+  if (parts.length >= 3) {
+    const [sub, ...rest] = parts
+    return {
+      baseLink: `${location.protocol}//${hostname}`,
+      apiBaseUrl: `${location.protocol}//${sub}-api.${rest.join('.')}`,
+    }
+  }
+  return {
+    baseLink: `${location.protocol}//${hostname}`,
+    apiBaseUrl: `${location.protocol}//${hostname}`,
+  }
+}
+
+const { baseLink: BaseLink, apiBaseUrl: ApiBaseUrl } = getDynamicUrls()
 
 function btoa2(ab) {
   const uint8Array = new Uint8Array(ab)
