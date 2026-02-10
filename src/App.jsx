@@ -5,6 +5,12 @@ import './App.css'
 
 function getDynamicUrls() {
   const { hostname } = location
+  if (hostname === 'localhost' || hostname === '127.0.0.1') {
+    return {
+      baseLink: 'https://pb.irislivier.com',
+      apiBaseUrl: 'https://pb-api.irislivier.com',
+    }
+  }
   const parts = hostname.split('.')
   if (parts.length >= 3) {
     const [sub, ...rest] = parts
@@ -265,6 +271,7 @@ function App() {
   const [receivedOc, setReceivedOc] = useState('')
   const [receivedOct, setReceivedOct] = useState('')
   const [processing, setProcessing] = useState(false)
+  const [isDirect, setIsDirect] = useState(false)
 
   /** @type {[File, any]} */
   const [file, setFile] = useState(null)
@@ -351,6 +358,7 @@ function App() {
 
       const data = await response.json()
       setShareLink(`${ApiBaseUrl}/raw/${data.id}`)
+      setIsDirect(true)
     } catch (err) {
       setError(err.message)
     } finally {
@@ -396,6 +404,7 @@ function App() {
 
       const data = await response.json()
       setShareLink(`${BaseLink}/${data.id}`)
+      setIsDirect(false)
     } catch (err) {
       setError(err.message)
     } finally {
@@ -541,7 +550,6 @@ function App() {
             fontFamily: '"Lucida Console", Consolas, Monaco, monospace',
           }}
         />
-
         <div style={{ display: 'flex', flexDirection: 'row', gap: '24px' }}>
           <div>
             <input
@@ -572,15 +580,18 @@ function App() {
             ) : null}
           </div>
         </div>
-
         <br />
-
-        <div>
-          <label>可以附个文件：</label>
+        <div style={{ margin: '12px 0' }}>
+          <label>可以附个小文件：</label>
           <input type="file" onChange={(e) => setFile(e.target.files[0])} />
         </div>
-        <br />
-
+        {file && file.size > 0 ? (
+          <React.Fragment>
+            <div class="notice" style={{ margin: '12px 0' }}>
+              注意：文件不会加密传输
+            </div>
+          </React.Fragment>
+        ) : null}
         {file && file.size > 2 * 1024 * 1024 ? (
           <React.Fragment>
             <div>
@@ -589,7 +600,6 @@ function App() {
             <br />
           </React.Fragment>
         ) : null}
-
         {file && file.size > 16 * 1024 * 1024 ? (
           <React.Fragment>
             <div>
@@ -598,7 +608,6 @@ function App() {
             <br />
           </React.Fragment>
         ) : null}
-
         <button
           type="submit"
           className={file && file.size > 16 * 1024 * 1024 ? 'disabled' : ''}
@@ -607,7 +616,7 @@ function App() {
         >
           {loading ? 'Creating...' : '生成分享链接'}
         </button>
-
+        &nbsp;
         <button
           type="submit"
           className={file && file.size > 16 * 1024 * 1024 ? 'disabled' : ''}
@@ -622,6 +631,11 @@ function App() {
 
       {shareLink && (
         <div style={{ marginTop: '20px' }}>
+          {isDirect && (
+            <div className="notice" style={{ marginBottom: '10px' }}>
+              注意：数据直链的数据是明文、不加密的。阅后即焚仍会生效。
+            </div>
+          )}
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <input
               className="fancy-input"
