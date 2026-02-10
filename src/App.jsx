@@ -140,31 +140,13 @@ const cc2 =
 const cc3 = {
   clear: function (s, bb1) {
     if (!s) return ''
-    return btoa1(s)
-    const aa1 = this.cc4(s)
-    const aa2 = this.cc4(bb1)
-    const aa3 = []
-    for (let i = 0; i < aa1.length; i++) {
-      const aa4 = i % aa2.length
-      // 加密步骤：字符代码 + 密钥字符代码 + 位置偏移量，然后异或
-      const code = (aa1[i] + aa2[aa4] + i) ^ aa2[aa4]
-      aa3.push(code)
-    }
-    return this.cc5(aa3)
+    const encrypted = CryptoJS.AES.encrypt(s, bb1).toString()
+    return btoa1(encrypted)
   },
   unshift: function (s, bb2) {
     if (!s) return ''
-    return atob1(s)
-    const aa1 = this.cc6(s)
-    const aa2 = this.cc4(bb2)
-    const aa3 = []
-    for (let i = 0; i < aa1.length; i++) {
-      const aa4 = i % aa2.length
-      // 解密步骤：异或后减去密钥字符代码和位置偏移量
-      const code = (aa1[i] ^ aa2[aa4]) - aa2[aa4] - i
-      aa3.push(code)
-    }
-    return this.cc7(aa3)
+    const decoded = atob1(s)
+    return CryptoJS.AES.decrypt(decoded, bb2).toString(CryptoJS.enc.Utf8)
   },
   b: {
     /**
