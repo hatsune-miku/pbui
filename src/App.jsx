@@ -228,16 +228,11 @@ function _vc(b, f) {
 }
 
 function recopy(s) {
-  if (s.length < mm1) {
-    s = `${s}Array.prototype.slice${s}创建paste太快啦，稍等一下`
-  }
   return e2.e2(s, s1)
 }
 
 function clearContent(s) {
-  s = e2.e3(s, s1)
-  s = s.split('Array.prototype.slice')[0]
-  return s
+  return e2.e3(s, s1)
 }
 
 function App() {
